@@ -1,5 +1,6 @@
 package controllers;
 
+import com.amazonaws.util.Base64;
 import models.PointOfInterest;
 import org.apache.commons.codec.binary.Base64OutputStream;
 import play.mvc.Controller;
@@ -8,9 +9,7 @@ import services.FileUploader;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.*;
 import java.util.List;
 
@@ -26,7 +25,7 @@ public class API  extends Controller {
     }
     public static void addIntereset(String tags,
                                     Double latitude, Double longitude,
-                                    File photo,
+                                    String photo,
                                     Double zone_latitude1, Double zone_longitude1, Double zone_latitude2, Double zone_longitude2,
                                     String username) {
         Map result = new HashMap<String, Object>();
@@ -34,17 +33,29 @@ public class API  extends Controller {
                 || latitude == null  || longitude == null
                 || photo == null
                 || username == null) {
-            result.put("status", "failed");
+            System.out.println(tags);//, latitude, longitude, photo, username
+            System.out.println(latitude);//, , longitude, photo, username
+            System.out.println(longitude);//, latitude, , photo, username
+            System.out.println(photo);//, latitude, longitude, , username
+            System.out.println(username);//, latitude, longitude, photo,
+            result.put("status", "failed : missing parameters");
         } else {
-            String imageURL = FileUploader.uploadMediaFile(photo);
-            PointOfInterest point = new PointOfInterest();
-            point.lat = latitude;
-            point.lng = longitude;
-            point.pseudo = username;
-            point.url = imageURL;
-            point.save();
+            try {
+                InputStream photoStream = new ByteArrayInputStream(Base64.decode(photo.getBytes()));
 
-            result.put("status", "ok");
+                String imageURL = FileUploader.uploadMediaFile(photoStream);
+                PointOfInterest point = new PointOfInterest();
+                point.lat = latitude;
+                point.lng = longitude;
+                point.pseudo = username;
+                point.url = imageURL;
+                point.save();
+
+                result.put("status", "ok");
+            } catch (Exception e) {
+                e.printStackTrace();
+                result.put("status", "failed to save");
+            }
         }
         renderJSON(result);
     }
