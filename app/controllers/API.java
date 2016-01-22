@@ -23,7 +23,7 @@ public class API  extends Controller {
         List<PointOfInterest> points = PointOfInterest.all().fetch();
         renderJSON(points);
     }
-    public static void addIntereset(String tags,
+    public static void addInterest(String tags,
                                     Double latitude, Double longitude,
                                     String photo,
                                     Double zone_latitude1, Double zone_longitude1, Double zone_latitude2, Double zone_longitude2,
@@ -41,6 +41,13 @@ public class API  extends Controller {
             result.put("status", "failed : missing parameters");
         } else {
             try {
+                byte[] bytes = new byte[0];
+                try {
+                    bytes = (photo.getBytes());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                String img = DatatypeConverter.printBase64Binary(bytes);
                 InputStream photoStream = new ByteArrayInputStream(Base64.decode(photo.getBytes()));
 
                 String imageURL = FileUploader.uploadMediaFile(photoStream);
@@ -58,5 +65,14 @@ public class API  extends Controller {
             }
         }
         renderJSON(result);
+    }
+    private static String convertToBase64(String s) {
+        byte[] bytes = new byte[0];
+        try {
+            bytes = (s.getBytes());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return DatatypeConverter.printBase64Binary(bytes);
     }
 }

@@ -4,7 +4,7 @@
 
 # Home page
 GET     /api/interest                           API.interest
-POST    /api/interest                           API.addIntereset
+POST    /api/interest                           API.addInterest
 
 # Ignore favicon requests
 GET     /favicon.ico                            404
