@@ -2,16 +2,22 @@ package controllers;
 
 import com.amazonaws.util.Base64;
 import models.PointOfInterest;
+import org.apache.commons.codec.binary.Base64InputStream;
 import org.apache.commons.codec.binary.Base64OutputStream;
+import play.data.Upload;
 import play.mvc.Controller;
 import services.FileUploader;
 
 import javax.imageio.ImageIO;
+import javax.xml.bind.DatatypeConverter;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Created by Leo on 15/01/16.
@@ -28,6 +34,7 @@ public class API  extends Controller {
                                     String photo,
                                     Double zone_latitude1, Double zone_longitude1, Double zone_latitude2, Double zone_longitude2,
                                     String username) {
+
         Map result = new HashMap<String, Object>();
         if(tags == null
                 || latitude == null  || longitude == null
@@ -41,14 +48,12 @@ public class API  extends Controller {
             result.put("status", "failed : missing parameters");
         } else {
             try {
-                byte[] bytes = new byte[0];
-                try {
-                    bytes = (photo.getBytes());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                String img = DatatypeConverter.printBase64Binary(bytes);
-                InputStream photoStream = new ByteArrayInputStream(Base64.decode(photo.getBytes()));
+
+                InputStream photoStream = new ByteArrayInputStream(
+                        Base64.decode(
+                                URLDecoder.decode(photo)
+                        )
+                );
 
                 String imageURL = FileUploader.uploadMediaFile(photoStream);
                 PointOfInterest point = new PointOfInterest();
@@ -66,13 +71,16 @@ public class API  extends Controller {
         }
         renderJSON(result);
     }
-    private static String convertToBase64(String s) {
-        byte[] bytes = new byte[0];
-        try {
-            bytes = (s.getBytes());
-        } catch (Exception e) {
-            e.printStackTrace();
+
+    public static byte[] decodeUrlSafe(byte[] data) {
+        byte[] encode = Arrays.copyOf(data, data.length);
+        for (int i = 0; i < encode.length; i++) {
+            if (encode[i] == '-') {
+                encode[i] = '+';
+            } else if (encode[i] == '_') {
+                encode[i] = '/';
+            }
         }
-        return DatatypeConverter.printBase64Binary(bytes);
+        return Base64.decode(encode);
     }
 }
