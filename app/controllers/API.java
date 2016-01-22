@@ -49,9 +49,9 @@ public class API  extends Controller {
         } else {
             try {
 
-                InputStream photoStream = new ByteArrayInputStream(Base64.decodeBase64(photo)
-                );
-                System.out.println(photoStream.toString());
+                System.out.println(photo);
+                InputStream photoStream = new ByteArrayInputStream(Base64.decodeBase64(photo.getBytes("UTF-8")));
+                System.out.println(photoStream.);
 
                 String imageURL = FileUploader.uploadMediaFile(photoStream);
                 PointOfInterest point = new PointOfInterest();
