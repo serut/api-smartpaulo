@@ -29,6 +29,6 @@ public class FileUploader{
         PutObjectRequest putObj= new PutObjectRequest("m2dl-api-smartpaulo", filename, media, omd);
         putObj.setCannedAcl(CannedAccessControlList.PublicRead);
         s3client.putObject(putObj);
-        return("https://s3-eu-west-1.amazonaws.com/m2dl-api-smartpaulo/"+calendar.getTimeInMillis());
+        return("http://m2dl-api-smartpaulo.s3.eu-central-1.amazonaws.com/" + filename);
     }
 }
