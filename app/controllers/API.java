@@ -1,7 +1,7 @@
 package controllers;
 
-import com.amazonaws.util.Base64;
 import models.PointOfInterest;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Base64InputStream;
 import org.apache.commons.codec.binary.Base64OutputStream;
 import play.data.Upload;
@@ -49,11 +49,9 @@ public class API  extends Controller {
         } else {
             try {
 
-                InputStream photoStream = new ByteArrayInputStream(
-                        Base64.decode(
-                                URLDecoder.decode(photo)
-                        )
+                InputStream photoStream = new ByteArrayInputStream(Base64.decodeBase64(photo)
                 );
+                System.out.println(photoStream.toString());
 
                 String imageURL = FileUploader.uploadMediaFile(photoStream);
                 PointOfInterest point = new PointOfInterest();
@@ -70,17 +68,5 @@ public class API  extends Controller {
             }
         }
         renderJSON(result);
-    }
-
-    public static byte[] decodeUrlSafe(byte[] data) {
-        byte[] encode = Arrays.copyOf(data, data.length);
-        for (int i = 0; i < encode.length; i++) {
-            if (encode[i] == '-') {
-                encode[i] = '+';
-            } else if (encode[i] == '_') {
-                encode[i] = '/';
-            }
-        }
-        return Base64.decode(encode);
     }
 }
