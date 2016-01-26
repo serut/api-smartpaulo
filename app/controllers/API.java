@@ -32,13 +32,18 @@ public class API  extends Controller {
     public static void addInterest(String tags,
                                     Double latitude, Double longitude,
                                     String photo,
-                                    Double zone_latitude1, Double zone_longitude1, Double zone_latitude2, Double zone_longitude2,
+                                    Double x1, Double x2, Double y1, Double y2,
                                     String username) {
 
         Map result = new HashMap<String, Object>();
         if(tags == null
                 || latitude == null  || longitude == null
                 || photo == null
+                || username == null
+                || x1 == null
+                || x2 == null
+                || y1 == null
+                || y2 == null
                 || username == null) {
             System.out.println(tags);//, latitude, longitude, photo, username
             System.out.println(latitude);//, , longitude, photo, username
@@ -55,6 +60,10 @@ public class API  extends Controller {
                 point.lat = latitude;
                 point.lng = longitude;
                 point.pseudo = username;
+                point.x1 = x1;
+                point.x2 = x2;
+                point.y1 = y1;
+                point.y2 = y2;
                 point.url = imageURL;
                 point.save();
 

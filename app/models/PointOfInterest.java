@@ -30,15 +30,15 @@ public class PointOfInterest extends Model{
     public String url;
 
     @Column
-    public Double zone_latitude1;
+    public Double x1;
 
     @Column
-    public Double zone_longitude1;
+    public Double x2;
 
     @Column
-    public Double zone_latitude2;
+    public Double y1;
 
     @Column
-    public Double zone_longitude2;
+    public Double y2;
 
 }
