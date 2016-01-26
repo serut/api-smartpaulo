@@ -29,7 +29,7 @@ public class API  extends Controller {
         List<PointOfInterest> points = PointOfInterest.all().fetch();
         renderJSON(points);
     }
-    public static void addInterest(String tags,
+    public static void addInterest(String tag,
                                     Double latitude, Double longitude,
                                     String photo,
                                     Double x1, Double x2, Double y1, Double y2,
@@ -39,7 +39,7 @@ public class API  extends Controller {
         if(tags == null
                 || latitude == null  || longitude == null
                 || photo == null
-                || username == null
+                || tag == null
                 || x1 == null
                 || x2 == null
                 || y1 == null
@@ -59,6 +59,7 @@ public class API  extends Controller {
                 PointOfInterest point = new PointOfInterest();
                 point.lat = latitude;
                 point.lng = longitude;
+                point.tag = tag;
                 point.pseudo = username;
                 point.x1 = x1;
                 point.x2 = x2;
