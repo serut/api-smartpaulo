@@ -44,7 +44,7 @@ public class API  extends Controller {
                 || y1 == null
                 || y2 == null
                 || username == null) {
-            System.out.println(tags);//, latitude, longitude, photo, username
+            System.out.println(tag);//, latitude, longitude, photo, username
             System.out.println(latitude);//, , longitude, photo, username
             System.out.println(longitude);//, latitude, , photo, username
             System.out.println(photo);//, latitude, longitude, , username
