@@ -36,8 +36,7 @@ public class API  extends Controller {
                                     String username) {
 
         Map result = new HashMap<String, Object>();
-        if(tags == null
-                || latitude == null  || longitude == null
+        if(latitude == null  || longitude == null
                 || photo == null
                 || tag == null
                 || x1 == null
