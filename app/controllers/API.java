@@ -47,7 +47,6 @@ public class API  extends Controller {
             System.out.println(tag);//, latitude, longitude, photo, username
             System.out.println(latitude);//, , longitude, photo, username
             System.out.println(longitude);//, latitude, , photo, username
-            System.out.println(photo);//, latitude, longitude, , username
             System.out.println(username);//, latitude, longitude, photo,
             result.put("status", "failed : missing parameters");
         } else {
